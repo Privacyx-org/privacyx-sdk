@@ -1,15 +1,32 @@
 {
   "name": "privacyx-sdk",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.1",
+  "description": "Privacyx SDK — PXP Standards (PXP-101 Balance Pass and more)",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "privacyx",
+    "pxp-101",
+    "zk",
+    "zero-knowledge",
+    "access-pass",
+    "ethereum"
+  ],
+  "author": "Privacyx Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Privacyx-org/privacyx-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Privacyx-org/privacyx-sdk/issues"
+  },
+  "homepage": "https://github.com/Privacyx-org/privacyx-sdk#readme",
   "dependencies": {
     "ethers": "^6.15.0"
   }
 }
+
