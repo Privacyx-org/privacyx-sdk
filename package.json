@@ -1,6 +1,6 @@
 {
   "name": "privacyx-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Privacyx SDK — PXP Standards (PXP-101 Balance Pass and more)",
   "type": "module",
   "main": "src/index.js",
