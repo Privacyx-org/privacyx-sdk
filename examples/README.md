@@ -193,3 +193,113 @@ This confirms the complete wiring between:
 - IdentityPassVerifier + IdentityPass reference contracts  
 - And the privacyx-sdk IdentityPass module on a local Hardhat node.
 
+---
+
+## 5) PXP-102 — Mainnet Identity Status API
+
+**File:** `identity-pass-mainnet-status-api.example.mjs`
+
+This script exposes a small HTTP API (Express) that lets integrators:
+
+- Check the current Merkle root for a given issuer (PXP-102)
+- Check whether a given nullifier has already been used on-chain (i.e. identity already proven)
+
+It connects directly to the **IdentityPass** contract deployed on Ethereum mainnet.
+
+### Environment variables
+
+- `RPC_URL` — Mainnet JSON-RPC endpoint (Infura, Alchemy, etc.)
+- `IDENTITY_PASS_ADDRESS` — IdentityPass contract address on mainnet
+
+For the PrivacyX reference deployment, this is currently:
+
+`IDENTITY_PASS_ADDRESS=0x2b8899B3ACDe63Fd5ABefa0D75d5982622665498`
+
+### Run the API locally
+
+cd ~/privacyx-sdk
+
+export RPC_URL="https://mainnet.infura.io/v3/YOUR_KEY"  
+export IDENTITY_PASS_ADDRESS="0x2b8899B3ACDe63Fd5ABefa0D75d5982622665498"
+
+PORT=4000 node examples/identity-pass-mainnet-status-api.example.mjs
+
+You should see:
+
+✅ PXP-102 status API listening on http://localhost:4000  
+• GET /  
+• GET /health  
+• GET /pxp-102/status/default  
+• GET /pxp-102/status?issuer=0x...&nullifier=0x...
+
+### Endpoints
+
+**GET /**  
+Basic metadata banner:
+
+{
+  "name": "PrivacyX Identity Pass Status API",
+  "standard": "PXP-102",
+  "network": "mainnet",
+  "contractAddress": "0x2b88...",
+  "endpoints": [
+    "/health",
+    "/pxp-102/status/default",
+    "/pxp-102/status?issuer=0x...&nullifier=0x..."
+  ]
+}
+
+**GET /health**  
+Simple healthcheck for monitoring:
+
+curl http://localhost:4000/health
+
+Example response:
+
+{
+  "status": "ok",
+  "network": "mainnet",
+  "blockNumber": 23871799,
+  "contractAddress": "0x2b88..."
+}
+
+**GET /pxp-102/status/default**  
+Uses the demo issuer/nullifier from identity_public.example.json:
+
+curl http://localhost:4000/pxp-102/status/default
+
+Example response:
+
+{
+  "network": "mainnet",
+  "contractAddress": "0x2b88...",
+  "issuerHex": "0x0000...0002",
+  "nullifierHex": "0x0000...0007",
+  "currentRoot": "5",
+  "expectedRoot": "5",
+  "rootMatches": true,
+  "nullifierUsed": false
+}
+
+**GET /pxp-102/status?issuer=0x...&nullifier=0x...**  
+Generic endpoint for real issuers / nullifiers:
+
+curl "http://localhost:4000/pxp-102/status?issuer=0xISSUER_BYTES32&nullifier=0xNULLIFIER_BYTES32"
+
+Example response:
+
+{
+  "network": "mainnet",
+  "contractAddress": "0x2b88...",
+  "issuerHex": "0xISSUER...",
+  "nullifierHex": "0xNULLIFIER...",
+  "currentRoot": "123456789...",
+  "nullifierUsed": false
+}
+
+This API is the base building block for:
+
+- dApps that want to check if a PXP-102 identity has already been proven  
+- KYC / access-control layers needing a simple "has this nullifier been seen?" endpoint  
+- Dashboards or monitoring tools around PXP-102 issuers and identities
+
