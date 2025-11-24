@@ -61,6 +61,34 @@ https://github.com/Privacyx-org/privacyx-balance-pass/blob/main/PXP-102.md
 
 ---
 
+# 🔒 ZK Helpers — Groth16 IO parsing (preview)
+
+The SDK exposes generic utilities to parse Groth16 proofs and public signals (snarkjs-compatible format). These helpers are shared across PXP-101 and the upcoming PXP-102 Identity Pass.
+
+import { parseGroth16Proof, parsePubSignals } from "privacyx-sdk";
+
+Proof parser:
+const proof = parseGroth16Proof(proofJson);
+// → {
+//     pi_a: bigint[3],
+//     pi_b: bigint[3][2],
+//     pi_c: bigint[3]
+//   }
+
+Public signals parser:
+const pubSignals = parsePubSignals(pubSignalsJson, expectedLength);
+// → bigint[]
+
+These utilities ensure:
+- consistent BigInt conversion
+- validated JSON shape
+- predictable input format across passes
+
+Example usage:
+examples/identity-parse.example.mjs
+   
+---
+
 # 📚 SDK Modules Overview
 
 ## ✅ PXP-101 — Balance Pass (implemented)
