@@ -39,5 +39,7 @@ export default PrivacyX;
 export { BalancePass } from "./balancePass.js";
 export { IdentityPass } from "./identityPass.js";
 export { ReputationPass } from "./reputationPass.js";
-export { PrivacyXError } from "./utils/errors.js";
+
+// ZK helpers (Groth16 IO parsing)
+export { parseGroth16Proof, parsePubSignals } from "./zk/parse.js";
 

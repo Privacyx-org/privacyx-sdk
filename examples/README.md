@@ -28,7 +28,9 @@ change the balancePassAddress,
 
 or switch chainId.
 
-2) PXP-102 — Identity Pass (IO / API reference example)
+---
+
+## 2) PXP-102 — Identity Pass (IO / API reference example)
 Files:
 
 identity-pass-node.example.mjs
@@ -97,3 +99,28 @@ zk/identity_proof.example.json and zk/identity_public.example.json there
 For PXP-101 details, see:
 
 PXP-101.md in the privacyx-balance-pass repo
+
+---
+
+## 3) ZK IO helpers — Parsing Groth16 proof & pubSignals
+
+**File:** `identity-parse.example.mjs`
+
+This script shows how to:
+
+- Load a Groth16 proof JSON (snarkjs-style)
+- Load public signals `[root, issuerHash, nullifierHash]` from JSON
+- Parse them into `BigInt` arrays using the internal helpers:
+
+  - `parseGroth16Proof(proofJson)`
+  - `parsePubSignals(pubSignalsJson, expectedLength)`
+
+### Run
+
+```bash
+node examples/identity-parse.example.mjs
+
+You should see:
+
+- Parsed Groth16 proof: { ... BigInt ... }
+- Parsed public signals (bigint[]): [ ... ]
