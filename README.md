@@ -120,6 +120,10 @@ All methods currently throw a *not implemented* error.
 
 👉 https://github.com/Privacyx-org/privacyx-balance-pass/blob/main/PXP-102.md
 
+### ➤ Reference contracts
+
+👉 https://github.com/Privacyx-org/privacyx-identity-pass
+
 ### Status
 
 - SDK API surface: complete  
