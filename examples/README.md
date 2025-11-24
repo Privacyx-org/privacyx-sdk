@@ -124,3 +124,65 @@ You should see:
 
 - Parsed Groth16 proof: { ... BigInt ... }
 - Parsed public signals (bigint[]): [ ... ]
+
+---
+
+## 4) PXP-102 — Identity Pass (local Hardhat demo)
+
+**File:** `identity-pass-local-hardhat.example.mjs`
+
+This script shows how to:
+
+- Connect to a local Hardhat node (`npx hardhat node`)
+- Use the PXP-102 `IdentityPass` SDK module
+- Read the current root for a given issuer (`getCurrentRoot(...)`)
+- Check nullifier status (`isNullifierUsed(...)`)
+- Submit a dummy Groth16 proof against a locally deployed `IdentityPass`
+- Observe the nullifier flip from `false` → `true` after `submitProof(...)`
+
+### Setup
+
+In the `privacyx-identity-pass` repo:
+
+1. Start a local Hardhat node:
+
+cd ~/privacyx-identity-pass  
+npx hardhat node
+
+2. In another terminal, deploy the mock verifier + IdentityPass and initialize the issuer/root compatible with `identity_public.example.json`:
+
+cd ~/privacyx-identity-pass  
+npx hardhat run scripts/deploy-local.js --network localhost
+
+You will see the deployed IdentityPass address in the logs, e.g.:
+
+IdentityPass deployed at: 0x...
+
+### Run the SDK example
+
+Back in the `privacyx-sdk` repo, configure env vars:
+
+cd ~/privacyx-sdk
+
+export RPC_URL="http://127.0.0.1:8545"  
+export PRIVATE_KEY="0x<one of the Hardhat account private keys>"  
+export IDENTITY_PASS_ADDRESS="0x<IdentityPass address from deploy-local.js logs>"
+
+Then run:
+
+node examples/identity-pass-local-hardhat.example.mjs
+
+You should see:
+
+Parsed dummy Groth16 proof and public signals  
+Current root on-chain for the issuer  
+Nullifier used BEFORE submitProof?: false  
+A successful transaction receipt for proveIdentity  
+Nullifier used AFTER submitProof?: true  
+
+This confirms the end-to-end wiring between:
+
+- PXP-102 reference contracts (`privacyx-identity-pass`)  
+- Circom IO examples (`identity_proof.example.json` / `identity_public.example.json`)  
+- And the IdentityPass SDK module in `privacyx-sdk`.
+
