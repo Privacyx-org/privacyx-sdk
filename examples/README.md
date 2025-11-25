@@ -303,3 +303,28 @@ This API is the base building block for:
 - KYC / access-control layers needing a simple "has this nullifier been seen?" endpoint  
 - Dashboards or monitoring tools around PXP-102 issuers and identities
 
+### Run with Docker
+
+You can also run the status API as a standalone Docker container.
+
+Build the image:
+
+docker build -t privacyx/pxp102-status-api:local .
+
+Run the container:
+
+docker run --rm \
+  -p 4000:4000 \
+  -e RPC_URL="https://mainnet.infura.io/v3/YOUR_KEY" \
+  -e IDENTITY_PASS_ADDRESS="0x2b8899B3ACDe63Fd5ABefa0D75d5982622665498" \
+  -e PXP102_API_KEY="your-strong-api-key" \
+  privacyx/pxp102-status-api:local
+
+Then you can query:
+
+curl http://localhost:4000/health  
+curl -H "x-api-key: your-strong-api-key" \
+  "http://localhost:4000/pxp-102/status/default"
+
+This is the recommended way for partners and backends to integrate PXP-102 status checks in production.
+
